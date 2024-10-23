@@ -1,0 +1,16 @@
+[package]
+name = "solana-geyser-clickhouse"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+solana-geyser-plugin-interface = "1.17.0"
+clickhouse-rs = "1.0.0"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+log = "0.4"
+base64 = "0.13"

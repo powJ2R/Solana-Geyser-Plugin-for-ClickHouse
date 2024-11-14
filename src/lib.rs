@@ -6,6 +6,7 @@ use clickhouse_rs::{Pool, Options};
 use std::sync::Arc;
 
 #[derive(Default)]
+#[derive(Debug)]
 pub struct ClickHouseGeyserPlugin {
     pool: Option<Arc<Pool>>,
 }
@@ -15,10 +16,8 @@ impl GeyserPlugin for ClickHouseGeyserPlugin {
         "ClickHouseGeyserPlugin"
     }
 
-    fn on_load(&mut self, config_file: &str) -> PluginResult<()> {
-        // Initialize ClickHouse connection pool
-        let options = Options::from_str("tcp://localhost:9000")?;
-        self.pool = Some(Arc::new(Pool::new(options)));
+    fn on_load(&mut self, config_file: &str, error: bool) -> PluginResult<()> {
+        self.pool = Some(Arc::new(Pool::new("tcp://localhost:9000")));
         Ok(())
     }
 

@@ -1,4 +1,6 @@
-CREATE TABLE accounts
+CREATE DATABASE IF NOT EXISTS SOLANA;
+
+CREATE TABLE SOLANA.accounts
 (
     slot UInt64,
     pubkey String,
@@ -14,7 +16,7 @@ CREATE TABLE accounts
 ENGINE = ReplacingMergeTree(write_version)
 ORDER BY (pubkey, slot);
 
-CREATE TABLE transactions
+CREATE TABLE SOLANA.transactions
 (
     signature String,
     slot UInt64,

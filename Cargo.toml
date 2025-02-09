@@ -15,3 +15,6 @@ base64 = "0.13"
 solana-geyser-plugin-interface = "1.18.26"
 solana-sdk = "2.1.13"
 clickhouse = { version = "0.13.1", features = ["time"] }
+hex = "0.4"
+thiserror = "1.0.37"
+chrono = "0.4"

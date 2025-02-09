@@ -3,18 +3,19 @@ CREATE DATABASE IF NOT EXISTS SOLANA;
 CREATE TABLE SOLANA.accounts
 (
     slot UInt64,
-    pubkey String,
-    owner String,
+    pubkey FixedString(44),
+    owner FixedString(44),
     lamports UInt64,
     executable UInt8,
     rent_epoch UInt64,
     data String,
     updated_at DateTime64(3),
-    txn_signature Nullable(String),
+    txn_signature Nullable(FixedString(88)),
     write_version UInt64
 )
 ENGINE = ReplacingMergeTree(write_version)
-ORDER BY (pubkey, slot);
+PRIMARY KEY (pubkey, slot)
+SETTINGS index_granularity = 8192;
 
 CREATE TABLE SOLANA.transactions
 (

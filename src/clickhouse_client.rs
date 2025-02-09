@@ -1,6 +1,7 @@
-// TODO
+// TODO:: make it multi-threaded
 use clickhouse::Client;
-use std::sync::Arc;
+use hex::encode;
+use std::{fmt, sync::Arc, error::Error};
 
 #[derive(Clone)]
 pub struct ClickhouseConnection {
@@ -20,36 +21,29 @@ impl ClickhouseConnection {
         Ok(())
     }
 
-    pub async fn create_table(&self, db_name: &str) -> Result<(), Box<dyn std::error::Error>> {  
-        println!("Creating table accounts...");
-        self.client.query(&format!(r#"
-            CREATE TABLE IF NOT EXISTS {db_name}.accounts (
-                pubkey String,
-                lamports UInt64,
-                owner String,
-                executable Bool,
-                rent_epoch UInt64,
-                data String,
-                write_version UInt64,
-                updated_at DateTime64(3),
-                slot UInt64
-            ) ENGINE = MergeTree()
-            ORDER BY (slot, pubkey);
-        "#)).execute().await?;
-
-        println!("Creating table transaction...");
-        self.client.query(&format!(r#"
-            CREATE TABLE IF NOT EXISTS {db_name}.transactions (
-               signature String,
-               slot UInt64,
-               success Bool,
-               fee UInt64,
-               block_time DateTime64(3),
-               program_id String,
-               instructions Array(String) 
-            ) ENGINE = MergeTree()
-            ORDER BY (slot, signature);
-        "#)).execute().await?;
+    pub async  fn insert_account_data(
+        &self,
+        pubkey: &str,
+        lamports: u64,
+        owner: &str,
+        executable: bool,
+        rent_epoch: u64,
+        data: &[u8],
+    ) -> Result<(), Box<dyn Error>> {
+        let query = format!(
+            "INSERT INTO accounts (pubkey, lamports, owner, executable, rent_epoch, data) VALUES ('{}', {}, '{}', {}, {}, '{}')",
+            pubkey, lamports, owner, executable, rent_epoch, encode(data)
+        );
+        self.client.query(&query).execute().await?;
         Ok(())
+    }
+}
+
+// Manually implement Debug for ClickhouseConnection
+impl fmt::Debug for ClickhouseConnection {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("ClickhouseConnection")
+            .field("client", &"<clickhouse::Client>")
+            .finish()
     }
 }

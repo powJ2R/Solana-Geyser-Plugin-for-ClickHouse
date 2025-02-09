@@ -13,7 +13,7 @@ sh -c "$(curl -sSfL https://release.solana.com/v1.17.0/install)"
 
 ## Configure Local Testnet
 ```
-solana-test-validator --no-bpf-jit --geyser-plugin-config config.json
+solana-test-validator --geyser-plugin-config ./config.json
 ```
 
 ## Set Up ClickHouse
@@ -34,7 +34,6 @@ cargo build --release
 Start Solana Validator with Plugin
 ```
 solana-test-validator \
-    --no-bpf-jit \
     --geyser-plugin-config config.json
 ```
 Test Data Flow

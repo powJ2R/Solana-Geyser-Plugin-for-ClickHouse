@@ -1,8 +1,8 @@
 {
-    "libpath": "/path/to/libsolana_geyser_clickhouse.so",
+    "libpath": "target/debug/libsolana_geyser_clickhouse.so",
     "clickhouse": {
       "endpoint": "tcp://localhost:9000",
-      "database": "solana",
+      "database": "SOLANA",
       "username": "default",
       "password": ""
     }

@@ -1,6 +1,6 @@
 use std::{sync::Arc, thread};
 use tokio::sync::mpsc::{self, Sender};
-use solana_geyser_plugin_interface::geyser_plugin_interface::{
+use agave_geyser_plugin_interface::geyser_plugin_interface::{
     GeyserPlugin, GeyserPluginError, ReplicaAccountInfoVersions, Result,
 };
 use solana_sdk::clock::Slot;

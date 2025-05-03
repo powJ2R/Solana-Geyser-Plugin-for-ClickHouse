@@ -55,10 +55,20 @@ impl GeyserPlugin for ClickhousePlugin {
         Ok(())
     }
 
+    #[no_mangle]
+    #[inline(never)]
     fn on_load(&mut self, config_file: &str, _is_reload: bool) -> Result<()> {
         info!("ClickhousePlugin loaded with config file: {}", config_file);
+        unsafe {
+            // TODO: do we need this still?
+            libc::raise(libc::SIGTRAP);
+        }
+        
+        // std::thread::sleep(std::time::Duration::from_secs(60));
+        // info!("ClickhousePlugin loaded with config file: {}", config_file);
         let conn = Arc::new(ClickhouseConnection::new());
         self.conn = conn.clone();
+        info!("ClickhousePlugin connected to Clickhouse");
 
         let (sender, receiver) = mpsc::channel(CHANNEL_CAPACITY);
         self.sender = Some(sender);
@@ -87,6 +97,8 @@ impl GeyserPlugin for ClickhousePlugin {
         slot: Slot,
         _is_startup: bool,
     ) -> Result<()> {
+        info!("update_account");
+
         if let ReplicaAccountInfoVersions::V0_0_3(account_info) = account {
             if let Some(sender) = &self.sender {
                 let update = AccountUpdate {

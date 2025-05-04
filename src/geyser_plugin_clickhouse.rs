@@ -1,6 +1,6 @@
 use std::{sync::Arc, thread};
 use tokio::sync::mpsc::{self, Sender};
-use solana_geyser_plugin_interface::geyser_plugin_interface::{
+use agave_geyser_plugin_interface::geyser_plugin_interface::{
     GeyserPlugin, GeyserPluginError, ReplicaAccountInfoVersions, Result,
 };
 use solana_sdk::clock::Slot;
@@ -55,8 +55,15 @@ impl GeyserPlugin for ClickhousePlugin {
         Ok(())
     }
 
+    #[no_mangle]
+    #[inline(never)]
     fn on_load(&mut self, config_file: &str, _is_reload: bool) -> Result<()> {
         info!("ClickhousePlugin loaded with config file: {}", config_file);
+        // unsafe {
+        //     // TODO: do we need this still?
+        //     libc::raise(libc::SIGTRAP);
+        // }
+        
         let conn = Arc::new(ClickhouseConnection::new());
         self.conn = conn.clone();
 

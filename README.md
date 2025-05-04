@@ -49,3 +49,28 @@ Query ClickHouse to verify data:
 ```
 SELECT * FROM solana.transactions ORDER BY slot DESC LIMIT 5;
 ```
+
+## cloud
+
+```aiignore
+curl --user 'default:5Q5BsFd_QScmr' \
+  --data-binary 'SELECT 1' \
+  https://xo610muboe.asia-southeast1.gcp.clickhouse.cloud:8443
+```
+```aiignore
+jdbc:clickhouse://xo610muboe.asia-southeast1.gcp.clickhouse.cloud:8443?user=default&password=5Q5BsFd_QScmr&ssl=true
+```
+
+# debugging
+
+To debug the plugin:
+
+1. modify your `config.json` to use full path to the .so e.g.
+```aiignore
+{
+    "libpath": "/media/jerry/biggie/DEV/jv/Solana-Geyser-Plugin-for-ClickHouse/target/debug/libsolana_geyser_clickhouse.so",
+    ...
+```
+2. run `Run test-validator`
+3. the SIGTRAP will fire
+4. breakpoints can be set in the lldb console (they don't work in RustRover)

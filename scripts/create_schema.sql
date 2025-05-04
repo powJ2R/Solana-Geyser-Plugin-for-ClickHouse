@@ -24,7 +24,7 @@ CREATE TABLE SOLANA.transactions
     block_time DateTime64(3),
     err Nullable(String),
     fee UInt64,
-    index UInt32,
+    `index` UInt32,
     programs Array(String),
     accounts Array(String),
     log_messages Array(String),

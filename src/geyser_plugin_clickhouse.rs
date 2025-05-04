@@ -50,8 +50,10 @@ impl GeyserPlugin for ClickhousePlugin {
     fn setup_logger(&self, logger: &'static dyn Log, level: LevelFilter) -> Result<()> {
         log::set_max_level(level);
         if let Err(err) = log::set_logger(logger) {
-            return Err(GeyserPluginError::Custom(Box::new(err)));
-        }
+            return Err(GeyserPluginError::Custom(Box::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                format!("Failed to set logger: {}", err)
+            ))));        }
         Ok(())
     }
 
@@ -59,11 +61,6 @@ impl GeyserPlugin for ClickhousePlugin {
     #[inline(never)]
     fn on_load(&mut self, config_file: &str, _is_reload: bool) -> Result<()> {
         info!("ClickhousePlugin loaded with config file: {}", config_file);
-        // unsafe {
-        //     // TODO: do we need this still?
-        //     libc::raise(libc::SIGTRAP);
-        // }
-        
         let conn = Arc::new(ClickhouseConnection::new());
         self.conn = conn.clone();
 

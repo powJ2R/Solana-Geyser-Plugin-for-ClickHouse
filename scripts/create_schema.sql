@@ -3,8 +3,8 @@ CREATE DATABASE IF NOT EXISTS SOLANA;
 CREATE TABLE SOLANA.accounts
 (
     slot UInt64,
-    pubkey FixedString(44),
-    owner FixedString(44),
+    pubkey FixedString(66),
+    owner FixedString(66),
     lamports UInt64,
     executable UInt8,
     rent_epoch UInt64,

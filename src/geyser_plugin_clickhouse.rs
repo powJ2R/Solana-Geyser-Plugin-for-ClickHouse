@@ -64,8 +64,6 @@ impl GeyserPlugin for ClickhousePlugin {
         //     libc::raise(libc::SIGTRAP);
         // }
         
-        // std::thread::sleep(std::time::Duration::from_secs(60));
-        // info!("ClickhousePlugin loaded with config file: {}", config_file);
         let conn = Arc::new(ClickhouseConnection::new());
         self.conn = conn.clone();
 
